@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Gala de Mis Quince Años</title>
+    
+    <meta property="og:title" content="Estás invitado a mis Quince Años">
+    <meta property="og:description" content="Acompáñame en esta noche mágica e inolvidable. ✨">
+    <meta property="og:image" content="https://i.ibb.co/LhYvB9G/preview-quince.jpg"> <meta property="og:type" content="website">
+
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+    <style>
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f1d592;
+            --dark-deep: #050505;
+            --shadow: rgba(0,0,0,0.8);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--dark-deep);
+            color: #fff;
+            font-family: 'Cormorant Garamond', serif;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
+        }
+
+        /* --- INTRODUCCIÓN: EL SOBRE --- */
+        #intro-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: #000; z-index: 5000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: all 1.5s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+
+        .envelope-wrap {
+            position: relative; width: 320px; height: 200px;
+            perspective: 2000px; cursor: pointer;
+            transition: transform 0.6s ease;
+        }
+
+        .envelope-wrap:hover { transform: scale(1.05); }
+
+        .envelope-flap {
+            position: absolute; top: 0; width: 0; height: 0;
+            border-left: 160px solid transparent; border-right: 160px solid transparent;
+            border-top: 110px solid #1a1a1a; z-index: 3;
+            transform-origin: top; transition: transform 1s ease;
+        }
+
+        .envelope-paper {
+            position: absolute; top: 10px; left: 10px; width: 300px; height: 180px;
+            background: #fff; border-radius: 2px; z-index: 2;
+            display: flex; justify-content: center; align-items: center;
+            transition: transform 1.2s ease;
+        }
+
+        .envelope-body {
+            position: absolute; width: 100%; height: 100%;
+            background: #111; border: 1px solid var(--gold); z-index: 1;
+            box-shadow: 0 30px 60px var(--shadow);
+        }
+
+        .opened .envelope-flap { transform: rotateX(180deg); }
+        .opened .envelope-paper { transform: translateY(-100px); opacity: 0; }
+        .fade-out { opacity: 0; visibility: hidden; transform: translateY(-100%); }
+
+        /* --- ESTRELLAS --- */
+        #starfield { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+
+        /* --- CONTENIDO --- */
+        #main-content { opacity: 0; transition: opacity 2s ease; padding-top: 100px; }
+
+        section {
+            min-height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; padding: 40px 10%;
+            text-align: center;
+        }
+
+        .royal-title {
+            font-family: 'Cinzel Decorative', serif; font-size: 0.8rem;
+            letter-spacing: 10px; color: var(--gold); margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .hero-name {
+            font-family: 'Alex Brush', cursive; font-size: clamp(5rem, 20vw, 9rem);
+            color: var(--gold); margin: 20px 0;
+            background: linear-gradient(to bottom, var(--gold-light), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        /* --- ESTILO DEL TEMPORIZADOR --- */
+        .countdown-container {
+            display: flex; gap: 20px; margin-top: 30px;
+            font-family: 'Cinzel Decorative', serif;
+        }
+        .time-box { display: flex; flex-direction: column; }
+        .time-val { font-size: 2.2rem; color: var(--gold); }
+        .time-label { font-size: 0.6rem; letter-spacing: 2px; opacity: 0.7; }
+
+        .ornament { width: 100px; height: 1px; background: var(--gold); margin: 30px 0; opacity: 0.4; }
+
+        .poetic-text {
+            font-size: clamp(1.3rem, 3.5vw, 1.8rem); line-height: 1.6;
+            font-weight: 300; font-style: italic; color: #f0f0f0;
+            max-width: 800px;
+        }
+
+        .event-details {
+            border: 1px solid var(--gold); padding: 50px 30px;
+            background: rgba(255,255,255,0.01);
+            backdrop-filter: blur(8px);
+        }
+
+        .event-details h2 { font-family: 'Cinzel Decorative'; font-size: 1.3rem; margin-bottom: 25px; letter-spacing: 3px; color: var(--gold); }
+        .event-details p { font-size: 1.1rem; margin: 12px 0; letter-spacing: 1px; }
+
+        .btn-action {
+            display: inline-block; padding: 18px 45px; margin-top: 35px;
+            border: 1px solid var(--gold); text-decoration: none;
+            color: #fff; font-family: 'Cinzel Decorative'; letter-spacing: 3px;
+            font-size: 0.75rem; transition: all 0.5s;
+            background: transparent;
+        }
+
+        .btn-action:hover {
+            background: var(--gold); color: #000;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3); transform: translateY(-3px);
+        }
+
+        .final-quote {
+            font-family: 'Alex Brush', cursive; font-size: clamp(3rem, 10vw, 4.5rem);
+            color: var(--gold); margin: 30px 0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="https://www.chosic.com/wp-content/uploads/2021/07/Rain-on-the-Window.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="intro-overlay">
+        <p style="font-family: 'Cinzel Decorative'; letter-spacing: 8px; font-size: 0.7rem; margin-bottom: 40px; color: var(--gold);">UNA INVITACIÓN ESPECIAL</p>
+        <div class="envelope-wrap" onclick="openInvitation()">
+            <div class="envelope-flap"></div>
+            <div class="envelope-paper">
+                <span style="color:#000; font-family: 'Cinzel Decorative'; font-size: 0.6rem; letter-spacing: 2px;">ABRIR CON AMOR</span>
+            </div>
+            <div class="envelope-body"></div>
+        </div>
+        <p style="margin-top: 50px; font-family: 'Cormorant Garamond'; font-style: italic; opacity: 0.6;">Toca el sobre para descubrir mi sueño</p>
+    </div>
+
+    <canvas id="starfield"></canvas>
+
+    <div id="main-content">
+        <section>
+            <div data-aos="fade-up" data-aos-duration="2000">
+                <p class="royal-title">Mis Dulces Quince Años</p>
+                <h1 class="hero-name">[Nombre]</h1>
+                <div class="ornament"></div>
+                <p class="poetic-text">"Hoy miro hacia atrás con una sonrisa y hacia adelante con mucha ilusión. Han sido quince años llenos de amor, aprendizaje y momentos que guardo en mi corazón."</p>
+            </div>
+        </section>
+
+        <section>
+            <div data-aos="fade-up">
+                <p class="poetic-text">"Doy gracias a la vida por el regalo de crecer y a mi familia por ser mi luz. Mi mayor deseo ahora es compartir este nuevo comienzo con las personas que más quiero."</p>
+            </div>
+            <div class="ornament" data-aos="zoom-in"></div>
+            <div data-aos="fade-up">
+                <p class="poetic-text">Tu presencia no es solo un honor, es el abrazo que necesito para que esta noche sea perfecta.</p>
+            </div>
+        </section>
+
+        <section>
+            <div class="event-details" data-aos="zoom-in">
+                <h2>Acompáñame en esta noche</h2>
+                <p>SÁBADO, 02 DE MAYO DE 2026</p>
+                <p>NUESTRA REUNIÓN | 7:00 PM</p>
+                <div style="margin: 20px 0; opacity: 0.8; font-style: italic;">Salón Cristal, Hotel Eurobuilding</div>
+                <a href="http://googleusercontent.com/maps.google.com/4" target="_blank" class="btn-action">VER UBICACIÓN EN MAPA</a>
+            </div>
+        </section>
+
+        <section>
+            <div data-aos="fade-up">
+                <p class="royal-title">Cada segundo cuenta...</p>
+                <div class="countdown-container">
+                    <div class="time-box"><span class="time-val" id="days">00</span><span class="time-label">DÍAS</span></div>
+                    <div class="time-box"><span class="time-val" id="hours">00</span><span class="time-label">HRS</span></div>
+                    <div class="time-box"><span class="time-val" id="minutes">00</span><span class="time-label">MIN</span></div>
+                    <div class="time-box"><span class="time-val" id="seconds">00</span><span class="time-label">SEG</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div data-aos="fade-up">
+                <p class="final-quote">“Lo más valioso de la vida no es lo que tenemos, sino a quién tenemos.”</p>
+                <p class="poetic-text" style="font-size: 1.1rem; margin-top: 10px;">¿Me harías el honor de acompañarme?</p>
+                <a href="https://wa.me/584120000000" class="btn-action" style="background: rgba(212, 175, 55, 0.1);">CONFIRMAR ASISTENCIA ✨</a>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        function openInvitation() {
+            const overlay = document.getElementById('intro-overlay');
+            const music = document.getElementById('bg-music');
+            document.querySelector('.envelope-wrap').parentElement.classList.add('opened');
+            
+            music.play().catch(e => console.log("Audio en espera"));
+
+            setTimeout(() => {
+                overlay.classList.add('fade-out');
+                document.getElementById('main-content').style.opacity = '1';
+                AOS.init({ duration: 1500, once: false, mirror: true });
+                initStars();
+                startCountdown();
+            }, 1500);
+        }
+
+        function startCountdown() {
+            const targetDate = new Date('May 2, 2026 19:00:00').getTime();
+            const update = () => {
+                const now = new Date().getTime();
+                const diff = targetDate - now;
+                if (diff > 0) {
+                    document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+                    document.getElementById('hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+                    document.getElementById('minutes').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+                    document.getElementById('seconds').innerText = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
+                }
+            };
+            update();
+            setInterval(update, 1000);
+        }
+
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function initStars() {
+            canvas.width = window.innerWidth; 
+            canvas.height = window.innerHeight;
+            for(let i=0; i<120; i++) {
+                stars.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, size: Math.random()*1.5, speed: Math.random()*0.3+0.05, opacity: Math.random(), blink: Math.random()*0.015 });
+            }
+            animate();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                s.y -= s.speed; 
+                s.opacity += s.blink;
+                if(s.opacity > 1 || s.opacity < 0.2) s.blink *= -1;
+                if(s.y < 0) s.y = canvas.height;
+                ctx.fillStyle = `rgba(212, 175, 55, ${s.opacity})`;
+                ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+    </script>
+</body>
+</html>

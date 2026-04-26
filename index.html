@@ -10,54 +10,67 @@
 
     <style>
         :root {
-            /* Colores basados en el vestido perla/champán */
-            --satin-gold: #e2d1c3;  
-            --champagne: #f4e9e2;
-            --deep-brown: #1a1412; 
-            --primary-color: #d4c3b5;
+            /* Colores Base */
+            --perla-oscuro: #E5E0D8;
+            --perla-claro: #FAF9F6;
+            --dorado-metal: #A6894F;
+            --dorado-brillante: #D4AF37;
+            --texto-solido: #423F3B;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: var(--deep-brown) !important;
-            color: var(--champagne) !important;
+            /* Efecto de fondo degradado tipo seda perla */
+            background: radial-gradient(circle, var(--perla-claro) 0%, var(--perla-oscuro) 100%);
+            color: var(--texto-solido);
             font-family: 'Cormorant Garamond', serif;
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
         }
 
-        /* Pantalla de Inicio (Sobre) */
+        /* Pantalla de Inicio */
         #intro-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background: #000; z-index: 5000;
+            background: radial-gradient(circle, var(--perla-claro), var(--perla-oscuro));
+            z-index: 5000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: all 1.5s cubic-bezier(0.7, 0, 0.3, 1);
+            transition: all 1.5s ease-in-out;
         }
 
         .envelope-wrap {
-            position: relative; width: 300px; height: 180px;
+            position: relative; width: 280px; height: 180px;
             perspective: 1500px; cursor: pointer;
         }
 
         .envelope-body {
             position: absolute; width: 100%; height: 100%;
-            background: var(--deep-brown); border: 1px solid var(--satin-gold);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+            background: linear-gradient(135deg, #DCCABC 0%, #BFA796 100%);
+            border: 1px solid var(--dorado-metal);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         }
 
         .envelope-flap {
             position: absolute; top: 0; width: 0; height: 0;
-            border-left: 150px solid transparent; border-right: 150px solid transparent;
-            border-top: 100px solid #2a221f; z-index: 3;
+            border-left: 140px solid transparent; border-right: 140px solid transparent;
+            border-top: 100px solid #CDB9A8; z-index: 3;
             transform-origin: top; transition: transform 1s ease;
         }
 
         .opened .envelope-flap { transform: rotateX(180deg); }
-        .fade-out { opacity: 0; visibility: hidden; transform: translateY(-100%); }
+        .fade-out { opacity: 0; visibility: hidden; transform: scale(1.1); }
 
-        /* Contenido Principal */
-        #main-content { opacity: 0; transition: opacity 2s ease; padding-top: 50px; }
+        /* Estilo del Nombre con Brillo Dorado */
+        .hero-name {
+            font-family: 'Alex Brush', cursive;
+            font-size: clamp(3.5rem, 10vw, 6rem);
+            background: linear-gradient(to right, #8f6b29, #dfc48c, #a6894f, #dfc48c, #8f6b29);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 15px 0;
+            filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.1));
+        }
+
+        #main-content { opacity: 0; transition: opacity 2s ease; }
 
         section {
             min-height: 100vh; display: flex; flex-direction: column;
@@ -65,50 +78,37 @@
             text-align: center;
         }
 
-        .royal-title {
-            font-family: 'Cinzel Decorative', serif; font-size: 0.75rem;
-            letter-spacing: 8px; color: var(--champagne); margin-bottom: 20px;
-        }
-
-        .hero-name {
-            font-family: 'Alex Brush', cursive; font-size: clamp(3.5rem, 10vw, 6rem);
-            color: var(--satin-gold) !important; margin: 15px 0;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        }
-
-        .ornament { width: 80px; height: 1px; background: var(--satin-gold); margin: 30px 0; opacity: 0.4; }
-
-        .poetic-text {
-            font-size: clamp(1.1rem, 3vw, 1.5rem); line-height: 1.7;
-            font-style: italic; color: var(--champagne); max-width: 700px;
-        }
-
         .event-details {
-            border: 1px solid var(--satin-gold); padding: 40px 20px;
-            background: rgba(255,255,255,0.02); backdrop-filter: blur(5px);
+            border: 1px solid var(--dorado-metal);
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(166, 137, 79, 0.1);
         }
 
-        /* Botón corregido (Sin azul y sin subrayado) */
         .btn-action {
             display: inline-block; padding: 15px 35px; margin-top: 30px;
-            text-decoration: none !important; 
-            color: var(--satin-gold) !important; 
-            border: 1px solid var(--satin-gold) !important;
+            text-decoration: none;
+            color: var(--dorado-metal);
+            border: 1px solid var(--dorado-metal);
             font-family: 'Cinzel Decorative'; letter-spacing: 2px; font-size: 0.7rem;
-            transition: all 0.4s ease; background: transparent;
+            transition: all 0.4s ease;
+            background: white;
         }
 
         .btn-action:hover {
-            background: var(--satin-gold) !important; 
-            color: var(--deep-brown) !important;
-            box-shadow: 0 0 20px rgba(226, 209, 195, 0.4);
+            background: var(--dorado-metal);
+            color: white;
+            box-shadow: 0 0 15px var(--dorado-metal);
         }
 
-        .countdown-container { display: flex; gap: 15px; margin-top: 25px; }
-        .time-val { font-size: 2rem; color: var(--satin-gold); font-family: 'Cinzel Decorative'; }
-        .time-label { font-size: 0.55rem; letter-spacing: 2px; opacity: 0.8; }
+        .time-val { font-size: 2.5rem; color: var(--dorado-metal); font-family: 'Cinzel Decorative'; }
 
-        #starfield { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        /* Canvas para los destellos (Purpurina) */
+        #destellos {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -118,23 +118,22 @@
     </audio>
 
     <div id="intro-overlay">
-        <p style="font-family: 'Cinzel Decorative'; letter-spacing: 5px; font-size: 0.6rem; margin-bottom: 30px; color: var(--satin-gold);">UNA INVITACIÓN ESPECIAL</p>
+        <p style="font-family: 'Cinzel Decorative'; letter-spacing: 5px; font-size: 0.6rem; margin-bottom: 30px; color: var(--dorado-metal);">UNA INVITACIÓN ESPECIAL</p>
         <div class="envelope-wrap" onclick="openInvitation()">
             <div class="envelope-flap"></div>
             <div class="envelope-body"></div>
         </div>
-        <p style="margin-top: 40px; font-family: 'Cormorant Garamond'; font-style: italic; opacity: 0.6; color: white;">Toca el sobre para entrar</p>
+        <p style="margin-top: 40px; font-family: 'Cormorant Garamond'; font-style: italic; opacity: 0.6;">Toca el sobre para entrar</p>
     </div>
 
-    <canvas id="starfield"></canvas>
+    <canvas id="destellos"></canvas>
 
     <div id="main-content">
         <section>
             <div data-aos="fade-up" data-aos-duration="2000">
-                <p class="royal-title">Mis Dulces Quince Años</p>
+                <p style="font-family: 'Cinzel Decorative'; letter-spacing: 8px; font-size: 0.7rem;">MIS DULCES QUINCE AÑOS</p>
                 <h1 class="hero-name">Doriannys Agreda</h1>
-                <div class="ornament"></div>
-                <p class="poetic-text">"Hoy miro hacia atrás con una sonrisa y hacia adelante con mucha ilusión. Han sido quince años llenos de amor y momentos que guardo en mi corazón."</p>
+                <p style="font-style: italic; max-width: 600px; font-size: 1.3rem;">"Hoy miro hacia atrás con una sonrisa y hacia adelante con mucha ilusión. Han sido quince años llenos de amor y momentos que guardo en mi corazón."</p>
             </div>
         </section>
 
@@ -159,8 +158,9 @@
                 </div>
             </div>
         </section>
+    </div>
 
-        <section>
+         <section>
             <div data-aos="fade-up">
                 <p class="hero-name" style="font-size: 3rem;">“Lo más valioso de la vida no es lo que tenemos, sino a quién tenemos.”</p>
                 <a href="https://wa.me/584124508443?text=¡Hola! Confirmo mi asistencia a los XV de Doriannys ✨" class="btn-action">CONFIRMAR ASISTENCIA ✨</a>
@@ -168,55 +168,70 @@
         </section>
     </div>
 
+
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
         function openInvitation() {
-            const music = document.getElementById('bg-music');
             document.querySelector('.envelope-wrap').parentElement.classList.add('opened');
-            music.play().catch(e => console.log("Audio activo"));
-
+            document.getElementById('bg-music').play().catch(() => {});
+            
             setTimeout(() => {
                 document.getElementById('intro-overlay').classList.add('fade-out');
                 document.getElementById('main-content').style.opacity = '1';
-                AOS.init({ duration: 1500, once: false });
-                initStars();
+                AOS.init({ duration: 1500 });
+                initDestellos();
                 startCountdown();
             }, 1200);
         }
 
         function startCountdown() {
-            const targetDate = new Date('May 9, 2026 20:30:00').getTime();
+            const target = new Date('May 9, 2026 20:30:00').getTime();
             setInterval(() => {
                 const now = new Date().getTime();
-                const diff = targetDate - now;
-                if (diff > 0) {
-                    document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
-                    document.getElementById('hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
-                    document.getElementById('minutes').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
-                    document.getElementById('seconds').innerText = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
+                const d = target - now;
+                if (d > 0) {
+                    document.getElementById('days').innerText = Math.floor(d / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+                    document.getElementById('hours').innerText = Math.floor((d % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+                    document.getElementById('minutes').innerText = Math.floor((d % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
                 }
             }, 1000);
         }
 
-        const canvas = document.getElementById('starfield');
+        // Script de Destellos (Efecto Escarcha del Vestido)
+        const canvas = document.getElementById('destellos');
         const ctx = canvas.getContext('2d');
-        let stars = [];
+        let particles = [];
 
-        function initStars() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            for(let i=0; i<80; i++) {
-                stars.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, size: Math.random()*1.2, speed: Math.random()*0.2, opacity: Math.random() });
+        function initDestellos() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            for(let i=0; i<100; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2 + 1,
+                    speed: Math.random() * 0.5 + 0.2,
+                    opacity: Math.random(),
+                    blink: Math.random() * 0.05
+                });
             }
             animate();
         }
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            stars.forEach(s => {
-                s.y -= s.speed;
-                if(s.y < 0) s.y = canvas.height;
-                ctx.fillStyle = `rgba(226, 209, 195, ${s.opacity})`;
-                ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
+            particles.forEach(p => {
+                p.y -= p.speed;
+                p.opacity += p.blink;
+                if(p.opacity > 1 || p.opacity < 0) p.blink *= -1;
+                if(p.y < 0) p.y = canvas.height;
+                
+                ctx.fillStyle = `rgba(212, 175, 55, ${p.opacity})`; // Color Oro brillante
+                ctx.shadowBlur = 5;
+                ctx.shadowColor = "white";
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
             });
             requestAnimationFrame(animate);
         }
